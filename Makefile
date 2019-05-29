@@ -119,11 +119,13 @@ CSRC = $(STARTUPSRC) \
        $(MESSAGINGSRC) \
        helpers.c \
        i2c.c \
+       display.c \
        shell/shellcommands.c \
        shell/cmd_piic.c \
        shell/cmd_diic.c \
        shell/cmd_probe.c \
        shell/cmd_reboot.c \
+       shell/cmd_disp.c \
        main.c
 
 #       adc.c pwm.c i2c.c spi.c wdog.c flash.c env.c helpers.c \

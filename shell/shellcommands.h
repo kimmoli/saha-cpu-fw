@@ -13,6 +13,7 @@ extern void cmd_diic(BaseSequentialStream *chp, int argc, char *argv[]);
 extern void cmd_piic(BaseSequentialStream *chp, int argc, char *argv[]);
 extern void cmd_probe(BaseSequentialStream *chp, int argc, char *argv[]);
 extern void cmd_reboot(BaseSequentialStream *chp, int argc, char *argv[]);
+extern void cmd_disp(BaseSequentialStream *chp, int argc, char *argv[]);
 
 extern const ShellCommand commands[];
 extern const ShellConfig shell_cfg_uart;

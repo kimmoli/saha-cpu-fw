@@ -8,8 +8,9 @@ const ShellCommand commands[] =
 {
     { "diic",    cmd_diic },
     { "piic",    cmd_piic },
-    { "probe",    cmd_probe },
+    { "probe",   cmd_probe },
     { "reboot",  cmd_reboot },
+    { "disp",    cmd_disp },
     {NULL, NULL}
 };
 

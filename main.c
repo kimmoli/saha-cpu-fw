@@ -9,6 +9,7 @@
 #include "shellcommands.h"
 
 #include "i2c.h"
+#include "display.h"
 
 int main(void)
 {
@@ -25,6 +26,17 @@ int main(void)
     PRINT("\n\r");
 
     initI2C();
+    displayInit();
+
+    if (displays[0].active)
+    {
+        displays[0].digits[0] = 'S';
+        displays[0].digits[1] = 'A';
+        displays[0].digits[2] = 'H';
+        displays[0].digits[3] = 'A';
+
+        displayUpdate();
+    }
 
     PRINT(" - Initialisation complete\n\r");
 
