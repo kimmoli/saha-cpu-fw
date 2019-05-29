@@ -78,8 +78,9 @@ void displayUpdate(void)
         {
             for (int digit=0 ; digit<4 ; digit++)
             {
-                txbuf[0x01 + digit*2] = segval[displays[index].digits[digit]];
-                txbuf[0x09 + digit*2] = segval[displays[index].digits[digit]];
+                uint8_t c = segval[displays[index].digits[digit] & 0x7F] | (displays[index].digits[digit] & 0x80);
+                txbuf[0x01 + digit*2] = c;
+                txbuf[0x09 + digit*2] = c;
             }
 
             i2cAcquireBus(&I2CD1);

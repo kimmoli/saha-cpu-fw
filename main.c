@@ -10,6 +10,8 @@
 
 #include "i2c.h"
 #include "display.h"
+#include "adc.h"
+#include "dmm.h"
 
 int main(void)
 {
@@ -37,6 +39,9 @@ int main(void)
 
         displayUpdate();
     }
+
+    initDmm();
+    initAdc();
 
     PRINT(" - Initialisation complete\n\r");
 

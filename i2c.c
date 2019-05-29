@@ -20,7 +20,6 @@ static THD_FUNCTION(i2cThread, arg)
 {
     (void)arg;
 
-    msg_t ret = MSG_OK;
     event_listener_t elI2C;
 
     chEvtRegister(&I2CUpdate, &elI2C, 9);

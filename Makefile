@@ -120,6 +120,8 @@ CSRC = $(STARTUPSRC) \
        helpers.c \
        i2c.c \
        display.c \
+       adc.c \
+       dmm.c \
        shell/shellcommands.c \
        shell/cmd_piic.c \
        shell/cmd_diic.c \

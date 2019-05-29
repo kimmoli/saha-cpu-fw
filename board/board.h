@@ -61,7 +61,7 @@
 /*
  * Board specific analog stuff
  */
-#define EXT_VREF                   ( (float)(3.300) )
+#define EXT_VREF                   ( (float)(3.350) )
 #define ADC_MEAS12V_SCALE          ( (float)(EXT_VREF/4096*(549+100)/100) )
 
 #include "iomap.h"
