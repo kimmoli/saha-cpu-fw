@@ -4,7 +4,7 @@
 #include "helpers.h"
 #include "7segment.c"
 
-DisplayDriver displays[8] = {0};
+DisplayDriver displays[8];
 
 static void initializeDisplay(DisplayDriver *display)
 {
@@ -55,10 +55,10 @@ static void detectDisplays(void)
 
             displays[instance].active = true;
             displays[instance].i2cAddress = addr;
-            displays[instance].digits[0] = 0;
-            displays[instance].digits[1] = 0;
-            displays[instance].digits[2] = 0;
-            displays[instance].digits[3] = 0;
+            displays[instance].digits[0] = 0x20;
+            displays[instance].digits[1] = 0x20;
+            displays[instance].digits[2] = 0x20;
+            displays[instance].digits[3] = 0x20;
             displays[instance].blink = 0;
 
             initializeDisplay(&displays[instance]);

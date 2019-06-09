@@ -40,8 +40,8 @@ int main(void)
         displayUpdate();
     }
 
-    initDmm();
-    initAdc();
+//    initDmm();
+//    initAdc();
 
     PRINT(" - Initialisation complete\n\r");
 

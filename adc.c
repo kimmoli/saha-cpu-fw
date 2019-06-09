@@ -65,7 +65,7 @@ void adcvtcb(void *p)
     osalSysLockFromISR();
 
     chVTResetI(&adcVt);
-    chVTSetI(&adcVt, MS2ST(250), adcvtcb, NULL);
+    chVTSetI(&adcVt, MS2ST(100), adcvtcb, NULL);
     adcStartConversionI(&ADCD1, &adcgrpcfg1, adcSamples1, ADC_GRP1_BUF_DEPTH);
 
     osalSysUnlockFromISR();
