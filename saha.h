@@ -1,5 +1,5 @@
-#ifndef SAHAKEYS_H
-#define SAHAKEYS_H
+#ifndef SAHA_H
+#define SAHA_H
 
 #define KEY_MAN_UP   0x0001
 #define KEY_MAN_DOWN 0x0002
@@ -10,4 +10,7 @@
 #define KEY_II       0x0040
 #define KEY_O        0x0080
 
-#endif
+extern void initSaha(void);
+
+#endif // SAHA_H
+

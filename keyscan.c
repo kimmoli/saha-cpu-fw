@@ -3,9 +3,9 @@
 #include "keyscan.h"
 #include "display.h"
 #include "helpers.h"
-#include "sahakeys.h"
 
-virtual_timer_t keyboardVt;
+virtual_timer_t keyboardScanVt;
+event_source_t keyboardScanEvent;
 event_source_t keyboardEvent;
 
 KeyboardDriver keyboards[8];
@@ -48,7 +48,7 @@ static uint16_t scanKeyboard(KeyboardDriver *kbd)
                 repecount = 0;
             }
 
-            PRINT("%04x %04x %04x - %d\n\r", prevkeys, newkeys, keys, repecount);
+            //PRINT("%04x %04x %04x - %d\n\r", prevkeys, newkeys, keys, repecount);
 
             prevkeys = newkeys;
         }
@@ -57,47 +57,26 @@ static uint16_t scanKeyboard(KeyboardDriver *kbd)
     return keys;
 }
 
-static THD_FUNCTION(keyboardThread, arg)
+static THD_FUNCTION(keyboardScanThread, arg)
 {
     (void)arg;
-    char buf[10] = {0};
-    uint16_t pgmval = 0;
 
-    event_listener_t elKbd;
+    event_listener_t elKbdScan;
 
-    chEvtRegister(&keyboardEvent, &elKbd, 0);
+    chEvtRegister(&keyboardScanEvent, &elKbdScan, 0);
 
     while (!chThdShouldTerminateX())
     {
         if (chEvtWaitAny(EVENT_MASK(0)))
         {
-            eventflags_t flags;
-            flags = chEvtGetAndClearFlags(&elKbd);
+            chEvtGetAndClearFlags(&elKbdScan);
 
-            uint32_t keys = scanKeyboard(&keyboards[0]);
+            uint16_t keys = scanKeyboard(&keyboards[0]);
 
-            if (keys & KEY_PGM_UP && pgmval < 9999)
+            if (keys != 0)
             {
-                pgmval++;
+                chEvtBroadcastFlags(&keyboardEvent, keys);
             }
-            else if (keys & KEY_PGM_DOWN && pgmval > 0)
-            {
-                pgmval--;
-            }
-
-            if (keys & KEY_O)
-            {
-                pgmval = 0;
-            }
-
-            chsnprintf(buf, 6, "%04d", pgmval);
-
-            displays[1].digits[0] = buf[0];
-            displays[1].digits[1] = buf[1];
-            displays[1].digits[2] = buf[2];
-            displays[1].digits[3] = buf[3];
-
-            updateDisplay();
         }
     }
 
@@ -111,10 +90,10 @@ void kbdvtcb(void *p)
 
     osalSysLockFromISR();
 
-    chEvtBroadcastFlagsI(&keyboardEvent, 0);
+    chEvtBroadcastFlagsI(&keyboardScanEvent, 0);
 
-    chVTResetI(&keyboardVt);
-    chVTSetI(&keyboardVt, MS2ST(100), kbdvtcb, NULL);
+    chVTResetI(&keyboardScanVt);
+    chVTSetI(&keyboardScanVt, MS2ST(100), kbdvtcb, NULL);
     osalSysUnlockFromISR();
 }
 
@@ -135,8 +114,9 @@ void initKeyboard(void)
         }
     }
 
+    chEvtObjectInit(&keyboardScanEvent);
     chEvtObjectInit(&keyboardEvent);
-    chThdCreateFromHeap(NULL, THD_WORKING_AREA_SIZE(1024), "keyboard", NORMALPRIO+1, keyboardThread, NULL);
+    chThdCreateFromHeap(NULL, THD_WORKING_AREA_SIZE(1024), "keyboard", NORMALPRIO+1, keyboardScanThread, NULL);
 
-    chVTSet(&keyboardVt, MS2ST(1000), kbdvtcb, NULL);
+    chVTSet(&keyboardScanVt, MS2ST(2000), kbdvtcb, NULL);
 }

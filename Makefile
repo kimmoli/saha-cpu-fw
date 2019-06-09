@@ -123,6 +123,7 @@ CSRC = $(STARTUPSRC) \
        adc.c \
        dmm.c \
        keyscan.c \
+       saha.c \
        shell/shellcommands.c \
        shell/cmd_piic.c \
        shell/cmd_diic.c \

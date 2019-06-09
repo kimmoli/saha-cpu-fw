@@ -13,6 +13,7 @@
 #include "adc.h"
 #include "dmm.h"
 #include "keyscan.h"
+#include "saha.h"
 
 int main(void)
 {
@@ -32,15 +33,19 @@ int main(void)
     initDisplay();
     initKeyboard();
 
-    if (displays[0].active)
-    {
-        displays[0].digits[0] = 'S';
-        displays[0].digits[1] = 'A';
-        displays[0].digits[2] = 'H';
-        displays[0].digits[3] = 'A';
+    displays[0].digits[0] = 'S';
+    displays[0].digits[1] = 'A';
+    displays[0].digits[2] = 'H';
+    displays[0].digits[3] = 'A';
 
-        updateDisplay();
-    }
+    displays[1].digits[0] = 'v';
+    displays[1].digits[1] = '1' | 0x80;
+    displays[1].digits[2] = '0';
+    displays[1].digits[3] = '0';
+
+    updateDisplay();
+
+    initSaha();
 
 //    initDmm();
 //    initAdc();

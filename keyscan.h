@@ -11,6 +11,8 @@ typedef struct KeyboardDriver KeyboardDriver;
 
 extern KeyboardDriver keyboards[8];
 
+extern event_source_t keyboardEvent;
+
 extern void initKeyboard(void);
 
 #endif
