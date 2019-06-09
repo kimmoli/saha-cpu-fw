@@ -122,6 +122,7 @@ CSRC = $(STARTUPSRC) \
        display.c \
        adc.c \
        dmm.c \
+       keyscan.c \
        shell/shellcommands.c \
        shell/cmd_piic.c \
        shell/cmd_diic.c \

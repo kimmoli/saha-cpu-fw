@@ -12,6 +12,7 @@
 #include "display.h"
 #include "adc.h"
 #include "dmm.h"
+#include "keyscan.h"
 
 int main(void)
 {
@@ -29,6 +30,7 @@ int main(void)
 
     initI2C();
     initDisplay();
+    initKeyboard();
 
     if (displays[0].active)
     {
