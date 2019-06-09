@@ -10,6 +10,15 @@
 #define KEY_II       0x0040
 #define KEY_O        0x0080
 
+#define KEY_STOP     0x8000
+
+#define MODE_PGM     0x10
+#define MODE_SEL     0x20
+#define MODE_RUN     0x40
+#define MODE_STOP    0x80
+
+#define SLOTS        5
+
 extern void initSaha(void);
 
 #endif // SAHA_H

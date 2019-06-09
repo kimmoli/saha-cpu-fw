@@ -84,6 +84,7 @@ void updateDisplay(void)
             }
 
             i2cAcquireBus(&I2CD1);
+            i2cMasterTransmit(&I2CD1, displays[index].i2cAddress,(uint8_t[]){ 0x81 | (displays[index].blink << 1) } , 1, NULL, 0);
             i2cMasterTransmit(&I2CD1, displays[index].i2cAddress, txbuf, 17, NULL, 0);
             i2cReleaseBus(&I2CD1);
         }
