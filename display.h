@@ -13,7 +13,7 @@ typedef struct DisplayDriver DisplayDriver;
 
 extern DisplayDriver displays[8];
 
-extern void displayInit(void);
-extern void displayUpdate(void);
+extern void initDisplay(void);
+extern void updateDisplay(void);
 
 #endif

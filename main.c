@@ -28,7 +28,7 @@ int main(void)
     PRINT("\n\r");
 
     initI2C();
-    displayInit();
+    initDisplay();
 
     if (displays[0].active)
     {
@@ -37,7 +37,7 @@ int main(void)
         displays[0].digits[2] = 'H';
         displays[0].digits[3] = 'A';
 
-        displayUpdate();
+        updateDisplay();
     }
 
 //    initDmm();

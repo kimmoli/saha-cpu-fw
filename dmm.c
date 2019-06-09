@@ -31,7 +31,7 @@ static THD_FUNCTION(dmmThread, arg)
         displays[0].digits[2] = buf[3];
         displays[0].digits[3] = buf[4];
 
-        displayUpdate();
+        updateDisplay();
     }
 
     chThdExit(MSG_OK);

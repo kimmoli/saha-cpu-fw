@@ -26,7 +26,7 @@ void cmd_disp(BaseSequentialStream *chp, int argc, char *argv[])
                                                      displays[i].digits[3] & 0x7f );
             }
         }
-        displayUpdate();
+        updateDisplay();
     }
     else
     {

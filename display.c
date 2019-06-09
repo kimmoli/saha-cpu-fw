@@ -68,7 +68,7 @@ static void detectDisplays(void)
     }
 }
 
-void displayUpdate(void)
+void updateDisplay(void)
 {
     uint8_t txbuf[17] = {0};
 
@@ -90,7 +90,7 @@ void displayUpdate(void)
     }
 }
 
-void displayInit(void)
+void initDisplay(void)
 {
     detectDisplays();
 }
