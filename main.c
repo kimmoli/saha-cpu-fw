@@ -13,6 +13,7 @@
 #include "adc.h"
 #include "dmm.h"
 #include "keyscan.h"
+#include "stepper.h"
 #include "saha.h"
 
 int main(void)
@@ -41,10 +42,11 @@ int main(void)
     displays[1].digits[0] = 'v';
     displays[1].digits[1] = '1' | 0x80;
     displays[1].digits[2] = '0';
-    displays[1].digits[3] = '0';
+    displays[1].digits[3] = '1';
 
     updateDisplay();
 
+    initStepper();
     initSaha();
 
 //    initDmm();

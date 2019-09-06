@@ -10,7 +10,10 @@ const ShellCommand commands[] =
     { "piic",    cmd_piic },
     { "probe",   cmd_probe },
     { "reboot",  cmd_reboot },
+    { "dmb",     cmd_dmb },
+    { "dmw",     cmd_dmw },
     { "disp",    cmd_disp },
+    { "step",    cmd_step },
     {NULL, NULL}
 };
 

@@ -245,8 +245,8 @@
  */
 #define VAL_GPIOA_MODER             (PIN_MODE_INPUT(GPIOA_PA0_NC) | \
                                      PIN_MODE_OUTPUT(GPIOA_PA1_OE_N) | \
-                                     PIN_MODE_OUTPUT(GPIOA_PA2_PULSE_1) | \
-                                     PIN_MODE_OUTPUT(GPIOA_PA3_PULSE_2) | \
+                                     PIN_MODE_ALTERNATE(GPIOA_PA2_PULSE_1) | \
+                                     PIN_MODE_ALTERNATE(GPIOA_PA3_PULSE_2) | \
                                      PIN_MODE_OUTPUT(GPIOA_PA4_DIR_1) | \
                                      PIN_MODE_OUTPUT(GPIOA_PA5_DIR_2) | \
                                      PIN_MODE_INPUT(GPIOA_PA6_NC) | \
@@ -1345,8 +1345,8 @@
  */
 #define VAL_GPIOA_AFRL              (PIN_AFIO_AF_0(GPIOA_PA0_NC) | \
                                      PIN_AFIO_AF_0(GPIOA_PA1_OE_N) | \
-                                     PIN_AFIO_AF_0(GPIOA_PA2_PULSE_1) | \
-                                     PIN_AFIO_AF_0(GPIOA_PA3_PULSE_2) | \
+                                     PIN_AFIO_AF_3(GPIOA_PA2_PULSE_1) | \
+                                     PIN_AFIO_AF_3(GPIOA_PA3_PULSE_2) | \
                                      PIN_AFIO_AF_0(GPIOA_PA4_DIR_1) | \
                                      PIN_AFIO_AF_0(GPIOA_PA5_DIR_2) | \
                                      PIN_AFIO_AF_0(GPIOA_PA6_NC) | \

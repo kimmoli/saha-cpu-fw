@@ -10,14 +10,18 @@
 #define KEY_II       0x0040
 #define KEY_O        0x0080
 
+#define KEY_DONE     0x4000
 #define KEY_STOP     0x8000
 
-#define MODE_PGM     0x10
-#define MODE_SEL     0x20
-#define MODE_RUN     0x40
-#define MODE_STOP    0x80
+#define MODE_PGM     0x010
+#define MODE_SEL     0x020
+#define MODE_READY   0x040
+#define MODE_STOP    0x080
+#define MODE_RUN     0x100
 
 #define SLOTS        5
+
+#define PULSESPERMM 2000
 
 extern void initSaha(void);
 
