@@ -9,6 +9,16 @@
 virtual_timer_t sahaVt;
 static uint8_t blink = 0x00;
 
+static bool canMoveUp(void)
+{
+    return palReadLine(LINE_IN_2) == PAL_HIGH && palReadLine(LINE_IN_4) == PAL_HIGH;
+}
+
+static bool canMoveDown(void)
+{
+    return palReadLine(LINE_IN_3) == PAL_HIGH && palReadLine(LINE_IN_4) == PAL_HIGH;
+}
+
 static void displayHandler(char *upper, char *lower, uint16_t mode)
 {
     if (mode == MODE_STOP)
@@ -62,6 +72,8 @@ static THD_FUNCTION(sahaThread, arg)
 
     chEvtRegister(&keyboardEvent, &elKbd, 0);
 
+    bool zeroing = false;
+
     while (!chThdShouldTerminateX())
     {
         if (chEvtWaitAnyTimeout(EVENT_MASK(0), MS2ST(250)))
@@ -74,12 +86,26 @@ static THD_FUNCTION(sahaThread, arg)
                 absval = prevval + ((STEPPERD1.pulsecount / PULSESPERMM) * ((STEPPERD1.dir == DIR_UP) ? 1 : -1));
             }
 
-            if (keys & KEY_STOP)
+            if ((keys & KEY_STOP || keys & LIMIT_SWITCH) && mode == MODE_RUN)
             {
                 step(&STEPPERD1, 0);
-                mode = MODE_STOP;
+
+                if (keys & KEY_STOP)
+                    mode = MODE_READY;
+                else
+                    mode = MODE_STOP;
+
                 prevval = absval;
                 setval = absval;
+
+                if (zeroing)
+                {
+                    prevval = 0;
+                    absval = 0;
+                    setval = 0;
+                    zeroing = false;
+                    mode = MODE_READY;
+                }
             }
 
             if (keys & KEY_DONE && mode == MODE_RUN)
@@ -116,9 +142,12 @@ static THD_FUNCTION(sahaThread, arg)
                         pgmval = pgm[sel];
                     }
                 }
-                else if (keys & KEY_O)
+                else if ((keys & KEY_O) && mode == MODE_READY && canMoveDown())
                 {
+                    absval = 500;
+                    prevval = 500;
                     setval = 0;
+                    zeroing = true;
                 }
 
                 if (mode == MODE_PGM && keys & KEY_PGM_UP && pgmval < 9999)
@@ -155,14 +184,14 @@ static THD_FUNCTION(sahaThread, arg)
                     pgmval = pgm[sel];
                 }
 
-                if (mode == MODE_READY && keys & KEY_PGM_UP)
+                if (mode == MODE_READY && keys & KEY_PGM_UP && canMoveUp())
                 {
                     if (setval < (9999-pgmval))
                     {
                         setval += pgmval;
                     }
                 }
-                else if (mode == MODE_READY && keys & KEY_PGM_DOWN)
+                else if (mode == MODE_READY && keys & KEY_PGM_DOWN && canMoveDown())
                 {
                     if (setval >= pgmval)
                     {
@@ -170,26 +199,26 @@ static THD_FUNCTION(sahaThread, arg)
                     }
                 }
 
-                if (keys & KEY_MAN_UP && setval < 9999 && mode == MODE_READY)
+                if (keys & KEY_MAN_UP && setval < 9999 && mode == MODE_READY && canMoveUp())
                 {
                     setval++;
                 }
-                else if (keys & KEY_MAN_DOWN && setval > 0 && mode == MODE_READY)
+                else if (keys & KEY_MAN_DOWN && setval > 0 && mode == MODE_READY && canMoveDown())
                 {
                     setval--;
                 }
             }
-
-            chsnprintf(upper, 5, "%04d", absval);
-            chsnprintf(lower, 5, "%d%3d", sel+1, pgmval);
-
-            displayHandler(upper, lower, mode);
 
             if (prevval != setval && mode == MODE_READY)
             {
                 step(&STEPPERD1, (setval - prevval) * PULSESPERMM);
                 mode = MODE_RUN;
             }
+
+            chsnprintf(upper, 5, "%04d", absval);
+            chsnprintf(lower, 5, "%d%3d", sel+1, pgmval);
+
+            displayHandler(upper, lower, mode);
         }
     }
 
@@ -218,6 +247,15 @@ static void stopButtonHandler(void *arg)
     osalSysUnlockFromISR();
 }
 
+static void limitSwitchHandler(void *arg)
+{
+    (void) arg;
+
+    osalSysLockFromISR();
+    chEvtBroadcastFlagsI(&keyboardEvent, LIMIT_SWITCH);
+    osalSysUnlockFromISR();
+}
+
 
 void initSaha(void)
 {
@@ -226,4 +264,8 @@ void initSaha(void)
 
     palEnableLineEvent(LINE_IN_1, PAL_EVENT_MODE_RISING_EDGE);
     palSetLineCallback(LINE_IN_1, stopButtonHandler, NULL);
+    palEnableLineEvent(LINE_IN_2, PAL_EVENT_MODE_FALLING_EDGE);
+    palSetLineCallback(LINE_IN_2, limitSwitchHandler, NULL);
+    palEnableLineEvent(LINE_IN_3, PAL_EVENT_MODE_FALLING_EDGE);
+    palSetLineCallback(LINE_IN_3, limitSwitchHandler, NULL);
 }

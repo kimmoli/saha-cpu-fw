@@ -14,6 +14,7 @@ const ShellCommand commands[] =
     { "dmw",     cmd_dmw },
     { "disp",    cmd_disp },
     { "step",    cmd_step },
+    { "in",      cmd_in },
     {NULL, NULL}
 };
 

@@ -12,6 +12,7 @@
 
 #define KEY_DONE     0x4000
 #define KEY_STOP     0x8000
+#define LIMIT_SWITCH 0x2000
 
 #define MODE_PGM     0x010
 #define MODE_SEL     0x020
@@ -21,8 +22,8 @@
 
 #define SLOTS        5
 
-#define PULSESPERMM 2000
-
+#define PULSESPERMM 3000
+// 10000 per kierros, nousu 5mm, välitys 20:30
 extern void initSaha(void);
 
 #endif // SAHA_H

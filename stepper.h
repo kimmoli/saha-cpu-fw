@@ -17,8 +17,8 @@ typedef struct StepperDriver StepperDriver;
 extern StepperDriver STEPPERD1;
 extern StepperDriver STEPPERD2;
 
-#define DIR_DOWN     PAL_LOW
-#define DIR_UP       PAL_HIGH
+#define DIR_DOWN     PAL_HIGH
+#define DIR_UP       PAL_LOW
 
 extern void initStepper(void);
 

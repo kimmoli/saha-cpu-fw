@@ -133,6 +133,7 @@ CSRC = $(STARTUPSRC) \
        shell/cmd_dm.c \
        shell/cmd_disp.c \
        shell/cmd_step.c \
+       shell/cmd_in.c \
        main.c
 
 #       adc.c pwm.c i2c.c spi.c wdog.c flash.c env.c helpers.c \

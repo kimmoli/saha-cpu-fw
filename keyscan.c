@@ -48,7 +48,7 @@ static uint16_t scanKeyboard(KeyboardDriver *kbd)
                 repecount = 0;
             }
 
-            //PRINT("%04x %04x %04x - %d\n\r", prevkeys, newkeys, keys, repecount);
+            // PRINT("%04x %04x %04x - %d\n\r", prevkeys, newkeys, keys, repecount);
 
             prevkeys = newkeys;
         }

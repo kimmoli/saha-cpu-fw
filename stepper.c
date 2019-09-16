@@ -45,7 +45,7 @@ static void stepper2Cb(PWMDriver *pwmp)
 const PWMConfig stepperConfig =
 {
     1000000,                                    /* 1 MHz  */
-    500,                                        /* / 500 = 2 kHz */
+    100,                                        /* / 500 = 2 kHz */
     NULL,
     {
         {PWM_OUTPUT_ACTIVE_HIGH, stepper1Cb},
