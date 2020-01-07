@@ -124,6 +124,8 @@ CSRC = $(STARTUPSRC) \
        dmm.c \
        keyscan.c \
        stepper.c \
+       rele.c \
+       eeprom.c \
        saha.c \
        shell/shellcommands.c \
        shell/cmd_piic.c \
@@ -134,6 +136,8 @@ CSRC = $(STARTUPSRC) \
        shell/cmd_disp.c \
        shell/cmd_step.c \
        shell/cmd_in.c \
+       shell/cmd_rele.c \
+       shell/cmd_eeprom.c \
        main.c
 
 #       adc.c pwm.c i2c.c spi.c wdog.c flash.c env.c helpers.c \

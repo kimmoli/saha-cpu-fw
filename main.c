@@ -14,6 +14,7 @@
 #include "dmm.h"
 #include "keyscan.h"
 #include "stepper.h"
+#include "rele.h"
 #include "saha.h"
 
 int main(void)
@@ -42,7 +43,7 @@ int main(void)
     displays[1].digits[0] = 'v';
     displays[1].digits[1] = '1' | 0x80;
     displays[1].digits[2] = '0';
-    displays[1].digits[3] = '1';
+    displays[1].digits[3] = '2';
 
     updateDisplay();
 
@@ -63,6 +64,8 @@ int main(void)
     palClearLine(LINE_LEDRED);
 
     shellInit();
+
+    setRele(8);
 
     chThdCreateFromHeap(NULL, SHELL_WA_SIZE, "shell", NORMALPRIO + 1, shellThread, (void *)&shell_cfg_uart);
 

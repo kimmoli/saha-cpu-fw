@@ -6,6 +6,7 @@
 #include "helpers.h"
 #include "stepper.h"
 #include "dmm.h"
+#include "eeprom.h"
 
 virtual_timer_t sahaVt;
 virtual_timer_t showdmmVt;
@@ -63,11 +64,12 @@ static THD_FUNCTION(sahaThread, arg)
     uint16_t pgm[SLOTS] = {0};
 
     /* replace with read from eeprom */
-    pgm[0] = 21;
-    pgm[1] = 40;
-    pgm[2] = 70;
-    pgm[3] = 100;
-    pgm[4] = 144;
+
+    int i;
+    for (i = 0 ; i<SLOTS ; i++)
+    {
+        pgm[i] = getEeprom(i);
+    }
 
     uint16_t mode = MODE_SEL;
     uint8_t sel = 0;
@@ -155,6 +157,7 @@ static THD_FUNCTION(sahaThread, arg)
                     if (mode == MODE_PGM)
                     {
                         pgm[sel] = pgmval;
+                        setEeprom(sel, pgmval);
                         mode = MODE_SEL;
                     }
                     else

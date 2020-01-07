@@ -18,6 +18,8 @@ extern void cmd_dmw(BaseSequentialStream *chp, int argc, char *argv[]);
 extern void cmd_disp(BaseSequentialStream *chp, int argc, char *argv[]);
 extern void cmd_step(BaseSequentialStream *chp, int argc, char *argv[]);
 extern void cmd_in(BaseSequentialStream *chp, int argc, char *argv[]);
+extern void cmd_rele(BaseSequentialStream *chp, int argc, char *argv[]);
+extern void cmd_eeprom(BaseSequentialStream *chp, int argc, char *argv[]);
 
 extern const ShellCommand commands[];
 extern const ShellConfig shell_cfg_uart;
