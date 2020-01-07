@@ -49,8 +49,8 @@ int main(void)
     initStepper();
     initSaha();
 
-//    initDmm();
-//    initAdc();
+    initDmm();
+    initAdc();
 
     PRINT(" - Initialisation complete\n\r");
 

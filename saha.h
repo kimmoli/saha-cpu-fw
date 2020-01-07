@@ -19,6 +19,7 @@
 #define MODE_READY   0x040
 #define MODE_STOP    0x080
 #define MODE_RUN     0x100
+#define MODE_DMM     0x200
 
 #define SLOTS        5
 

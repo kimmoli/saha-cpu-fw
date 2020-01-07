@@ -5,8 +5,10 @@
 #include "display.h"
 #include "helpers.h"
 #include "stepper.h"
+#include "dmm.h"
 
 virtual_timer_t sahaVt;
+virtual_timer_t showdmmVt;
 static uint8_t blink = 0x00;
 
 static bool canMoveUp(void)
@@ -42,6 +44,13 @@ static void displayHandler(char *upper, char *lower, uint16_t mode)
     displays[1].digits[3] = (mode == MODE_PGM && blink) ? ' ' : lower[3];
 
     updateDisplay();
+}
+
+static void showdmmvtcb(void *p)
+{
+    (void) p;
+
+    show_dmm = false;
 }
 
 static THD_FUNCTION(sahaThread, arg)
@@ -84,6 +93,18 @@ static THD_FUNCTION(sahaThread, arg)
             if (STEPPERD1.running)
             {
                 absval = prevval + ((STEPPERD1.pulsecount / PULSESPERMM) * ((STEPPERD1.dir == DIR_UP) ? 1 : -1));
+            }
+
+            if (keys & KEY_STOP && mode == MODE_READY)
+            {
+                mode = MODE_DMM;
+                show_dmm = true;
+                chVTSet(&showdmmVt, MS2ST(2000), showdmmvtcb, NULL);
+            }
+
+            if (mode == MODE_DMM && !show_dmm)
+            {
+                mode = MODE_READY;
             }
 
             if ((keys & KEY_STOP || keys & LIMIT_SWITCH) && mode == MODE_RUN)
@@ -218,7 +239,8 @@ static THD_FUNCTION(sahaThread, arg)
             chsnprintf(upper, 5, "%04d", absval);
             chsnprintf(lower, 5, "%d%3d", sel+1, pgmval);
 
-            displayHandler(upper, lower, mode);
+            if (mode != MODE_DMM)
+                displayHandler(upper, lower, mode);
         }
     }
 

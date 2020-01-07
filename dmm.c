@@ -7,13 +7,13 @@
 #include "display.h"
 
 event_source_t dmmUpdate;
+bool show_dmm = false;
 
 static THD_FUNCTION(dmmThread, arg)
 {
     (void)arg;
 
     event_listener_t elDmm;
-    eventflags_t flags;
     char buf[10] = {0};
 
     chEvtRegister(&dmmUpdate, &elDmm, 0);
@@ -22,16 +22,19 @@ static THD_FUNCTION(dmmThread, arg)
     {
         chEvtWaitOne(EVENT_MASK(0));
 
-        flags = chEvtGetAndClearFlags(&elDmm);
+        (void) chEvtGetAndClearFlags(&elDmm);
 
-        chsnprintf(buf, 6, "%05.2f", batv);
+        if (show_dmm)
+        {
+            chsnprintf(buf, 6, "%05.2f", batv);
 
-        displays[0].digits[0] = buf[0];
-        displays[0].digits[1] = buf[1] | 0x80;
-        displays[0].digits[2] = buf[3];
-        displays[0].digits[3] = buf[4];
+            displays[0].digits[0] = buf[0];
+            displays[0].digits[1] = buf[1] | 0x80;
+            displays[0].digits[2] = buf[3];
+            displays[0].digits[3] = buf[4];
 
-        updateDisplay();
+            updateDisplay();
+        }
     }
 
     chThdExit(MSG_OK);

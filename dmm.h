@@ -4,5 +4,5 @@
 extern event_source_t dmmUpdate;
 
 extern void initDmm(void);
-
+extern bool show_dmm;
 #endif
