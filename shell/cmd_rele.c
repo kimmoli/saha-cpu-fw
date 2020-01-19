@@ -9,10 +9,11 @@ void cmd_rele(BaseSequentialStream *chp, int argc, char *argv[])
 {
     if (argc == 1)
     {
-        setRele(strtol(argv[0], NULL, 10));
+        setRelayRaw(strtol(argv[0], NULL, 10));
         return;
     }
 
-    chprintf(chp, "%d\n\r", getRele());
+    chprintf(chp, "Relays %d\n\r", getRelay());
+    chprintf(chp, "Inputs %d\n\r", getRelayInputs());
 }
 

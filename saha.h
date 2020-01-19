@@ -14,6 +14,11 @@
 #define KEY_STOP     0x8000
 #define LIMIT_SWITCH 0x2000
 
+#define AUX_IN_1     0x0100
+#define AUX_IN_2     0x0200
+#define AUX_IN_3     0x0400
+#define AUX_IN_4     0x0800
+
 #define MODE_PGM     0x010
 #define MODE_SEL     0x020
 #define MODE_READY   0x040

@@ -3,7 +3,23 @@
 #include "helpers.h"
 #include "rele.h"
 
-void setRele(uint8_t value)
+void setRelay(uint8_t rele, bool value)
+{
+    uint8_t r = getRelay();
+
+    if (value)
+    {
+        r |= rele;
+    }
+    else
+    {
+        r &= rele ^ 0xf;
+    }
+
+    setRelayRaw(r);
+}
+
+void setRelayRaw(uint8_t value)
 {
     uint8_t txbuf[2] = {0};
 
@@ -17,7 +33,7 @@ void setRele(uint8_t value)
     i2cReleaseBus(&I2CD1);
 }
 
-uint8_t getRele(void)
+uint8_t getRelay(void)
 {
     uint8_t txbuf[1] = {0};
     uint8_t rxbuf[1] = {0};
@@ -30,3 +46,15 @@ uint8_t getRele(void)
     return (rxbuf[0] & 0xf0) >> 4;
 }
 
+uint16_t getRelayInputs(void)
+{
+    uint8_t txbuf[1] = {0};
+    uint8_t rxbuf[1] = {0};
+
+    i2cAcquireBus(&I2CD1);
+    txbuf[0] = 0x00;
+    i2cMasterTransmit(&I2CD1, RELE_ADDR, txbuf, 1, rxbuf, 1);
+    i2cReleaseBus(&I2CD1);
+
+    return ((rxbuf[0] & 0x0f) ^ 0x0f) << 8;
+}

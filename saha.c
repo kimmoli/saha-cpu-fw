@@ -7,6 +7,17 @@
 #include "stepper.h"
 #include "dmm.h"
 #include "eeprom.h"
+#include "rele.h"
+
+
+// LINE_IN_1 - stop
+// LINE_IN_2 - limit
+// LINE_IN_3 - limit
+// LINE_IN_4 - valokenno
+
+// AUX_IN_3 - terän anturi
+// AUX_IN_4 - valokennon ohitus
+
 
 virtual_timer_t sahaVt;
 virtual_timer_t showdmmVt;
@@ -14,12 +25,12 @@ static uint8_t blink = 0x00;
 
 static bool canMoveUp(void)
 {
-    return palReadLine(LINE_IN_2) == PAL_HIGH && palReadLine(LINE_IN_4) == PAL_HIGH;
+    return palReadLine(LINE_IN_2) == PAL_HIGH && (palReadLine(LINE_IN_4) == PAL_HIGH || getRelayInputs() & AUX_IN_4);
 }
 
 static bool canMoveDown(void)
 {
-    return palReadLine(LINE_IN_3) == PAL_HIGH && palReadLine(LINE_IN_4) == PAL_HIGH;
+    return palReadLine(LINE_IN_3) == PAL_HIGH && (palReadLine(LINE_IN_4) == PAL_HIGH || getRelayInputs() & AUX_IN_4);
 }
 
 static void displayHandler(char *upper, char *lower, uint16_t mode)
@@ -95,6 +106,15 @@ static THD_FUNCTION(sahaThread, arg)
             if (STEPPERD1.running)
             {
                 absval = prevval + ((STEPPERD1.pulsecount / PULSESPERMM) * ((STEPPERD1.dir == DIR_UP) ? 1 : -1));
+            }
+
+            if (keys & AUX_IN_3)
+            {
+                setRelay(RELAY_4, FALSE);
+
+                step(&STEPPERD1, 0);
+
+                mode = MODE_STOP;
             }
 
             if (keys & KEY_STOP && mode == MODE_READY)

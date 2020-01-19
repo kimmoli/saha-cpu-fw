@@ -65,7 +65,7 @@ int main(void)
 
     shellInit();
 
-    setRele(8);
+    setRelay(RELAY_4, TRUE);
 
     chThdCreateFromHeap(NULL, SHELL_WA_SIZE, "shell", NORMALPRIO + 1, shellThread, (void *)&shell_cfg_uart);
 

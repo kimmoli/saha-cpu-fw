@@ -3,6 +3,7 @@
 #include "keyscan.h"
 #include "display.h"
 #include "helpers.h"
+#include "rele.h"
 
 virtual_timer_t keyboardScanVt;
 event_source_t keyboardScanEvent;
@@ -72,6 +73,7 @@ static THD_FUNCTION(keyboardScanThread, arg)
             chEvtGetAndClearFlags(&elKbdScan);
 
             uint16_t keys = scanKeyboard(&keyboards[0]);
+            keys |= getRelayInputs();
 
             if (keys != 0)
             {
