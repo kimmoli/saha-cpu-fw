@@ -165,6 +165,7 @@ static THD_FUNCTION(sahaThread, arg)
                     if (mode == MODE_SEL)
                     {
                         mode = MODE_READY;
+                        setRelay(RELAY_4, TRUE);
                     }
                     else
                     {

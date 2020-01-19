@@ -13,7 +13,7 @@ void setRelay(uint8_t rele, bool value)
     }
     else
     {
-        r &= rele ^ 0xf;
+        r &= (rele ^ RELE_MASK);
     }
 
     setRelayRaw(r);
@@ -28,7 +28,7 @@ void setRelayRaw(uint8_t value)
     txbuf[1] = 0x0f;
     i2cMasterTransmit(&I2CD1, RELE_ADDR, txbuf, 2, NULL, 0);
     txbuf[0] = 0x01;
-    txbuf[1] = (value << 4) & 0xf0;
+    txbuf[1] = value;
     i2cMasterTransmit(&I2CD1, RELE_ADDR, txbuf, 2, NULL, 0);
     i2cReleaseBus(&I2CD1);
 }
@@ -43,7 +43,7 @@ uint8_t getRelay(void)
     i2cMasterTransmit(&I2CD1, RELE_ADDR, txbuf, 1, rxbuf, 1);
     i2cReleaseBus(&I2CD1);
 
-    return (rxbuf[0] & 0xf0) >> 4;
+    return (rxbuf[0] & 0xf0);
 }
 
 uint16_t getRelayInputs(void)
@@ -56,5 +56,5 @@ uint16_t getRelayInputs(void)
     i2cMasterTransmit(&I2CD1, RELE_ADDR, txbuf, 1, rxbuf, 1);
     i2cReleaseBus(&I2CD1);
 
-    return ((rxbuf[0] & 0x0f) ^ 0x0f) << 8;
+    return ((rxbuf[0] & 0x0f) << 8) ^ AUX_IN_INVERT;
 }
